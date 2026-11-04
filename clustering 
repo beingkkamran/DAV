@@ -1,0 +1,77 @@
+Hierarchical Clustering
+Objective: To perform Hierarchical Clustering using the Agglomerative approach, visualize the dendrogram, and group similar data points into clusters.
+Dataset: Iris dataset (using two features: Sepal Length and Sepal Width).
+
+# Hierarchical Clustering using Agglomerative Approach
+
+# Step 1: Import required libraries
+import matplotlib.pyplot as plt
+from sklearn.datasets import load_iris
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import AgglomerativeClustering
+from scipy.cluster.hierarchy import dendrogram, linkage
+
+# Step 2: Load the Iris dataset
+iris = load_iris()
+X = iris.data[:, :2]  # Select first two features
+
+print("Dataset shape:", X.shape)
+
+# Step 3: Standardize the data
+scaler = StandardScaler()
+X_scaled = scaler.fit_transform(X)
+
+# Step 4: Create a dendrogram
+linked = linkage(X_scaled, method='ward')
+
+plt.figure(figsize=(12, 6))
+dendrogram(linked)
+plt.title("Dendrogram - Hierarchical Clustering")
+plt.xlabel("Data Points")
+plt.ylabel("Euclidean Distance")
+plt.show()
+
+# Step 5: Apply Agglomerative Clustering
+model = AgglomerativeClustering(n_clusters=3,linkage='ward')
+clusters = model.fit_predict(X_scaled)
+
+# Step 6: Visualize the clusters
+plt.figure(figsize=(8, 5))
+
+plt.scatter(
+    X_scaled[:, 0],
+    X_scaled[:, 1],
+    c=clusters,
+    cmap='viridis',
+    s=50
+)
+
+plt.xlabel("Standardized Sepal Length")
+plt.ylabel("Standardized Sepal Width")
+plt.title("Agglomerative Hierarchical Clustering")
+plt.show()
+
+# Step 7: Display cluster assignments
+print("\nCluster assignments:")
+print(clusters)
+
+print("\nFirst 10 data points and their clusters:")
+for i in range(10):
+    print("Data Point:", i, "Cluster:", clusters[i])
+
+ 
+
+•	Initially, every data point is considered an individual cluster.
+•	The two closest data points are merged first.
+•	The process continues by merging the closest clusters.
+•	Eventually, all data points become part of one cluster.
+
+ 
+	
+Agglomerative Clustering follows a bottom-up approach.
+For example, consider five students grouped based on their marks:
+•	Initially, each student forms an individual cluster.
+•	Students with similar marks are grouped together.
+•	The newly formed clusters are progressively merged.
+•	Finally, the process produces the required number of clusters.
+
